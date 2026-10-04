@@ -4,7 +4,8 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 
 const BASE = "https://api.crossref.org";
-const UA = "mcp-crossref/1.0.0 (mailto:chris.sellers01@gmail.com)";
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "amw-dogfood@agentmail.to";
+const UA = `mcp-crossref/1.0.0 (mailto:${CONTACT_EMAIL})`;
 const RATE_LIMIT_MS = 200;
 let last = 0;
 

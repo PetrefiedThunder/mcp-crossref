@@ -47,3 +47,9 @@ npx mcp-crossref
 ## License
 
 MIT
+
+## Environment variables
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `CONTACT_EMAIL` | `amw-dogfood@agentmail.to` | Contact address sent to the upstream API. Crossref asks for a contact address in the User-Agent (`mailto:`) to route requests to its "polite" pool. Set it to an address you monitor. |
