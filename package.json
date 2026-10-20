@@ -12,6 +12,9 @@
   "author": "",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
     "zod": "^4.3.6"
@@ -19,7 +22,7 @@
   "devDependencies": {
     "@types/node": "^25.3.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "~4.0.18"
   },
   "bin": {
     "mcp-crossref": "./dist/index.js"
