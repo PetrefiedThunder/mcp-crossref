@@ -15,4 +15,5 @@ it("requires the patched SDK release for package consumers", () => {
 
   expect(manifest.dependencies["@modelcontextprotocol/sdk"]).toBe("^1.31.0");
   expect(lock.packages[""].dependencies["@modelcontextprotocol/sdk"]).toBe(manifest.dependencies["@modelcontextprotocol/sdk"]);
+  expect(lock.packages["node_modules/@modelcontextprotocol/sdk"].version).toBe("1.32.1");
 });
