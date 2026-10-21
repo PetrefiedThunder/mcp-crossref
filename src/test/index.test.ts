@@ -13,7 +13,17 @@ it("requires the patched SDK release for package consumers", () => {
   const manifest = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
   const lock = JSON.parse(readFileSync(new URL("../../package-lock.json", import.meta.url), "utf8"));
 
-  expect(manifest.dependencies["@modelcontextprotocol/sdk"]).toBe("^1.31.0");
+  expect(manifest.dependencies["@modelcontextprotocol/sdk"]).toBe("^1.32.1");
   expect(lock.packages[""].dependencies["@modelcontextprotocol/sdk"]).toBe(manifest.dependencies["@modelcontextprotocol/sdk"]);
-  expect(lock.packages["node_modules/@modelcontextprotocol/sdk"].version).toBe("1.32.1");
+
+  // The resolved version must satisfy the manifest range and sit at or above
+  // the patched floor, so a lower resolution can never silently pass.
+  const resolved: string = lock.packages["node_modules/@modelcontextprotocol/sdk"].version;
+  const atLeast = (v: string, floor: string) => {
+    const [a, b, c] = v.split(".").map(Number);
+    const [x, y, z] = floor.split(".").map(Number);
+    return a !== x ? a > x : b !== y ? b > y : c >= z;
+  };
+  expect(atLeast(resolved, "1.32.1") && resolved.split(".")[0] === "1",
+    `resolved SDK ${resolved} does not satisfy ^1.32.1`).toBe(true);
 });
