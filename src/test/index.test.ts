@@ -13,7 +13,19 @@ it("requires the patched SDK release for package consumers", () => {
   const manifest = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
   const lock = JSON.parse(readFileSync(new URL("../../package-lock.json", import.meta.url), "utf8"));
 
-  expect(manifest.dependencies["@modelcontextprotocol/sdk"]).toBe("^1.32.1");
+  // Verify the SDK range is specified and uses a caret range compatible with ^1.32.1
+  const sdkRange = manifest.dependencies["@modelcontextprotocol/sdk"];
+  expect(sdkRange).toBeTruthy();
+  expect(sdkRange.startsWith("^1.")).toBe(true);
+  
+  // Verify the range floor is at least 1.32.1 (the patched version)
+  const rangeVersion = sdkRange.replace(/^\^/, "");
+  const [a, b, c] = rangeVersion.split(".").map(Number);
+  const [x, y, z] = "1.32.1".split(".").map(Number);
+  const rangeFloorAtLeast = a !== x ? a > x : b !== y ? b > y : c >= z;
+  expect(rangeFloorAtLeast, 
+    `SDK range ${sdkRange} floor ${rangeVersion} is below required 1.32.1`).toBe(true);
+
   expect(lock.packages[""].dependencies["@modelcontextprotocol/sdk"]).toBe(manifest.dependencies["@modelcontextprotocol/sdk"]);
 
   // The resolved version must satisfy the manifest range and sit at or above
